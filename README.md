@@ -92,10 +92,7 @@ The application should now be running on http://localhost:3000
 src/
 ├── components/       # Reusable components
 ├── pages/            # Page components
-├── hooks/            # Custom hooks
-├── services/         # Supabase services
-├── contexts/         # React contexts
-├── utils/            # Utility functions
-├── App.jsx           # Main application component
-└── main.jsx          # Application entry point
+├── App.css           # Main application component
+├── App.tsx           # Main application component
+└── main.tsx          # Application entry point
 ```
