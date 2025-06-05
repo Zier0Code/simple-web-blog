@@ -49,19 +49,6 @@ yarn install
 #### 3. Set up Supabase
 
 - Go to Supabase and create a new project
-- Set your environment variables PRIVATE URL and API KEY in `.env`
-
-```
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
-
-- Install supabase in your working space
-
-```
-npm install @supabase/supabase-js
-```
-
 - Create a table for your blog posts with the following SQL:
 
 ```
@@ -78,7 +65,16 @@ create table posts (
 - Enable Row Level Security (RLS) and create policies for your table
 - Note down your Supabase URL and public anon key
 
-#### 4. Run the development server
+#### 4. Configure environment variables
+
+Create a `.env` file in the root directory with the following content:
+
+```
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+#### 5. Run the development server
 
 ```
 npm run dev
