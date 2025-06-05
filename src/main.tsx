@@ -11,7 +11,8 @@ createRoot(document.getElementById("root")!).render(
       {/* Added store provider in react redux  */}
       <Provider store={store}>
         <h2 className="font-bold p-4 text-center">
-          Welcome to Web Blog - ReactJS, TailwindCSS, Supabase +{" "}
+          Welcome to Web Blog - ReactJS, TailwindCSS, Supabase, and Redux
+          Toolkit
         </h2>
         <RouterProvider router={router} />
       </Provider>
