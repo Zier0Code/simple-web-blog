@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser as LoginApi } from "../api/database";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/authSlice";
 
 const Login = () => {
   useEffect(() => {
-    document.title = "Register - Web Blog";
+    document.title = "Login - Web Blog";
   }, []);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const user = useSelector((state: any) => state.auth.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -20,17 +22,33 @@ const Login = () => {
     };
 
     const body: Body = {
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
+      email: email,
+      password: password,
     };
 
     // create login api here
     try {
       if (!loading) {
         setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000);
+        LoginApi(body)
+          .then((res) => {
+            if (res.ok) {
+              console.log("Login successful:", res);
+              // Dispatch login action with user data
+              dispatch(login(res.data));
+
+              // Navigate to the home page after successful login
+              navigate("/");
+            }
+          })
+          .catch((err) => {
+            console.error("Error during login:", err);
+          })
+          .finally(() => {
+            setLoading(false);
+            setEmail("");
+            setPassword("");
+          });
       }
     } catch (err) {
       console.error("Error during login:", err);

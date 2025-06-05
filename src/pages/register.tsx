@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser as registerAPI } from "../api/database";
+import { login } from "../redux/authSlice";
+import { useDispatch } from "react-redux";
 
 const Register = () => {
   useEffect(() => {
@@ -7,51 +10,60 @@ const Register = () => {
   }, []);
 
   type loadingType = boolean;
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<loadingType>(false);
   // State variables for registration form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
 
   // Handle registration form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    type Body = {
+    type User = {
       email: string;
       password: string;
-      confirmPassword: string;
-      fullName: string;
-      contactNumber: string;
+      // confirmPassword: string;
+      // fullName: string;
+      // contactNumber: string;
     };
 
-    const body: Body = {
+    const body: User = {
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
-      fullName: fullName,
-      contactNumber: contactNumber,
+      // confirmPassword: confirmPassword,
+      // fullName: fullName,
+      // contactNumber: contactNumber,
     };
 
     // create registration api here
     try {
       if (!loading) {
         setLoading((prev) => !prev);
-        setTimeout(() => {
-          console.log("data fetched successfully", body, loading);
-          setLoading((prev) => !prev);
-        }, 10000);
+        registerAPI(body)
+          .then((res) => {
+            if (res.ok) {
+              console.log("Registration successful:", res);
+              // Dispatch login action with user data
+              dispatch(login(res.data));
+              // Navigate to the home page after successful registration
+              navigate("/");
+              alert("Registration successful! Please log in.");
+            } else {
+              console.error("Registration failed:", res.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Error during registration:", err);
+          })
+          .finally(() => {
+            setLoading((prev) => !prev);
+            setEmail("");
+            setPassword("");
+          });
       }
     } catch (err) {
       console.error("Error during registration:", err);
-    } finally {
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setFullName("");
-      setContactNumber("");
     }
 
     // Handle registration logic here
@@ -72,24 +84,6 @@ const Register = () => {
           <div className="max-w-md w-auto mt-5 flex flex-col gap-2">
             <input
               className="p-2 border-2 border-gray-300 rounded-2xl"
-              placeholder="Full Name"
-              type="text"
-              required
-              onChange={(e) => setFullName(e.target.value)}
-              value={fullName}
-              autoFocus
-              autoComplete="name"
-            />
-            <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
-              placeholder="Contact Number"
-              type="text"
-              required
-              onChange={(e) => setContactNumber(e.target.value)}
-              value={contactNumber}
-            />
-            <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
               placeholder="Email"
               type="email"
               required
@@ -103,14 +97,6 @@ const Register = () => {
               required
               onChange={(e) => setPassword(e.target.value)}
               value={password}
-            />
-            <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
-              placeholder="Confirm Password"
-              type="password"
-              required
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              value={confirmPassword}
             />
           </div>
           <button
