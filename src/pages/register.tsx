@@ -1,10 +1,13 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+  const user = useSelector((state: any) => state.auth.user);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle registration logic here
-    console.log("Registration form submitted");
+    console.log("Registration form submitted", user?.email);
   };
 
   return (
