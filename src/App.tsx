@@ -13,10 +13,28 @@ function App() {
     document.title = "Simple Blog";
   }, []);
 
+  const navigations = [
+    { name: "Home", path: "/" },
+    { name: "Blogs", path: "/blogs/views" },
+    { name: "Create Blog", path: "/blogs/create" },
+    { name: "Update Blog", path: "/blogs/update" },
+    { name: "Delete Blog", path: "/blogs/delete" },
+  ];
   return (
     <>
       <div>
         Hello Welcome to Simple Blog
+        <div className="flex justify-center mt-4">
+          {navigations.map((nav) => (
+            <button
+              key={nav.name}
+              className="mx-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300"
+              onClick={() => navigate(nav.path)}
+            >
+              {nav.name}
+            </button>
+          ))}
+        </div>
         <p className="font-bold">account:{user?.user?.user_metadata?.email} </p>
       </div>
       <button
