@@ -8,7 +8,6 @@ export function WithAuth<P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) {
   return function AuthComponent(props: P) {
-    const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -25,8 +24,6 @@ export function WithAuth<P extends object>(
         } else {
           navigate("/login"); // or redirect for your framework
         }
-
-        setLoading(false);
       };
 
       checkSession();
