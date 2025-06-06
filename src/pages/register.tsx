@@ -43,7 +43,6 @@ const Register = () => {
         registerAPI(body)
           .then((res) => {
             if (res.ok) {
-              console.log("Registration successful:", res);
               // Dispatch login action with user data
               dispatch(login(res.data));
               // Navigate to the home page after successful registration

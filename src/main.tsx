@@ -13,7 +13,6 @@ createRoot(document.getElementById("root")!).render(
           Welcome to Web Blog - ReactJS, TailwindCSS, Supabase, and Redux
           Toolkit
         </h2>
-
         <RouterProvider router={router} />
       </Provider>
     </>
