@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerUser as registerAPI } from "../api/database";
 import { login } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
+import registerImage from "../assets/images/img2.jpg";
 
 const Register = () => {
   useEffect(() => {
@@ -70,17 +71,24 @@ const Register = () => {
 
   return (
     <>
-      <div className="flex justify-center">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
-          <h1 className="font-bold text-xl pb-2">Register</h1>
-          <p>
-            Already have an Account ?{" "}
-            <Link className="text-blue-600 hover:underline" to={"/login"}>
-              {" "}
-              Login.
-            </Link>
-          </p>
-          <div className="max-w-md w-auto mt-5 flex flex-col gap-2">
+      <div className="flex absolute left-0 top-50 mx-auto px-40 w-full justify-around -z-10 bg-gray-100">
+        <div>
+          <img
+            src={registerImage}
+            alt="Login"
+            className="w-96 h-96 object-cover shadow-lg"
+            style={{
+              boxShadow: "-20px 20px 0 0 rgba(0,0,0,.8)", // solid shadow, 10px right, -5px up, no blur, semi-transparent black
+            }}
+          />
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 p-4 self-center"
+        >
+          <h1 className="font-bold text-3xl pb-2 text-center">Register</h1>
+
+          <div className="max-w-md w-auto flex flex-col gap-2">
             <input
               className="p-2 border-2 border-gray-300 rounded-2xl"
               placeholder="Email"
@@ -88,6 +96,7 @@ const Register = () => {
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              autoFocus
             />
             <input
               className="p-2 border-2 border-gray-300 rounded-2xl"
@@ -98,6 +107,13 @@ const Register = () => {
               value={password}
             />
           </div>
+          <p className="text-xs ml-2">
+            Already have an Account ?{" "}
+            <Link className="text-blue-600 hover:underline" to={"/login"}>
+              {" "}
+              Login.
+            </Link>
+          </p>
           <button
             className={`bg-black  p-2 rounded-2xl  transition-colors duration-300  ${
               loading
@@ -107,7 +123,7 @@ const Register = () => {
             type="submit"
             disabled={loading}
           >
-            {loading ? "Loading..." : "Register"}
+            {loading ? "Loading..." : "Submit"}
           </button>
         </form>
       </div>
