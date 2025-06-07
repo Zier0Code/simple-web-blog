@@ -60,12 +60,12 @@ const Login = () => {
   };
   return (
     <>
-      <div className="flex absolute left-0 top-50 mx-auto px-40 w-full justify-around -z-10 bg-gray-100">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:absolute md:left-0 md:top-30 mx-auto md:px-40 sm:grid-gap-2 p-10 w-full md:justify-around -z-10 bg-gray-100">
         <div>
           <img
             src={loginImage}
             alt="Login"
-            className="w-96 h-96 object-cover shadow-lg"
+            className="md:w-96 md:h-96 object-cover shadow-lg mb-10 size-60 flex self-center  "
             style={{
               boxShadow: "-20px 20px 0 0 rgba(0,0,0,.8)", // solid shadow, 10px right, -5px up, no blur, semi-transparent black
             }}
@@ -73,13 +73,14 @@ const Login = () => {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 p-4 self-center"
+          className="flex flex-col gap-4 p-4 self-center w-full"
         >
-          <h1 className="font-bold text-3xl pb-2 text-center">Login</h1>
-
-          <div className="max-w-md w-auto flex flex-col gap-2">
+          <div className="flex justify-start ">
+            <h1 className="font-bold text-3xl pb-2 text-center">Login</h1>
+          </div>
+          <div className="max-w-md w-full flex flex-col gap-2">
             <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
+              className="p-2 border-2 border-gray-300 rounded-2xl w-full"
               placeholder="Email"
               type="email"
               name="email"
@@ -89,7 +90,7 @@ const Login = () => {
               autoFocus
             />
             <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
+              className="p-2 border-2 border-gray-300 rounded-2xl w-full"
               placeholder="Password"
               type="password"
               name="password"
@@ -108,7 +109,7 @@ const Login = () => {
             </Link>
           </p>
           <button
-            className={`bg-black  p-2 rounded-2xl  transition-colors duration-300  ${
+            className={`bg-black  max-w-md p-2 rounded-2xl  transition-colors duration-300  ${
               loading
                 ? "cursor-not-allowed bg-gray-200 text-black/60"
                 : "cursor-pointer hover:bg-gray-800 text-white"
