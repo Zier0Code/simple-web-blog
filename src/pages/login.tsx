@@ -112,7 +112,7 @@ const Login = () => {
             className={`bg-black  max-w-md p-2 rounded-2xl  transition-colors duration-300  ${
               loading
                 ? "cursor-not-allowed bg-gray-200 text-black/60"
-                : "cursor-pointer hover:bg-gray-800 text-white"
+                : "cursor-pointer hover:bg-gray-800 text-white font-bold"
             }`}
             type="submit"
             disabled={loading}
