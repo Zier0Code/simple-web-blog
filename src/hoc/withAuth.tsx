@@ -22,7 +22,7 @@ export function WithAuth<P extends object>(
           setIsAuthenticated(true);
           dispatch(login(session)); // Dispatch login action with user data
         } else {
-          navigate("/login"); // or redirect for your framework
+          navigate("/landing"); // or redirect for your framework
         }
       };
 

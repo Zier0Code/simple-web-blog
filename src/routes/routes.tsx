@@ -6,11 +6,16 @@ import CreateBlog from "../pages/blogs/create";
 import ViewBlogPosts from "../pages/blogs/view";
 import DeleteBlogPosts from "../pages/blogs/delete";
 import UpdateBlogPosts from "../pages/blogs/update";
+import LandingPage from "../pages/landing";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/landing",
+    element: <LandingPage />,
   },
   {
     path: "/register",
