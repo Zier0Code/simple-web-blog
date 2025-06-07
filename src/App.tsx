@@ -23,7 +23,9 @@ function App() {
   return (
     <>
       <div>
-        Hello Welcome to Simple Blog
+        <p className="text-center text-2xl font-bold mt-10">
+          Hello Welcome to Simple Blog
+        </p>
         <div className="flex justify-center mt-4">
           {navigations.map((nav) => (
             <button
@@ -35,17 +37,22 @@ function App() {
             </button>
           ))}
         </div>
-        <p className="font-bold">account:{user?.user?.user_metadata?.email} </p>
+        <div className="text-center mt-4">
+          <p className="text-lg font-semibold">User Information</p>
+          <p className="text-gray-700">
+            Email: {user?.user?.user_metadata?.email || "N/A"}
+          </p>
+        </div>
+        <button
+          className="mt-10 absolute bottom-10 left-10 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300 hover:cursor-pointer"
+          onClick={() => {
+            dispatch(logout());
+            navigate("/login");
+          }}
+        >
+          Logout
+        </button>
       </div>
-      <button
-        className="mt-10 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300 hover:cursor-pointer"
-        onClick={() => {
-          dispatch(logout());
-          navigate("/login");
-        }}
-      >
-        Logout
-      </button>
     </>
   );
 }
