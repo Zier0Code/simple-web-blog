@@ -143,7 +143,7 @@ const UpdateBlogPosts = () => {
           </div>
           {openUpdateModal && (
             <div className="fixed inset-0 bg-gray-800/10 bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-xl font-semibold mb-4">Update Post</h2>
                 <form onSubmit={handleUpdateFormSubmit}>
                   <input
@@ -161,7 +161,7 @@ const UpdateBlogPosts = () => {
                     onChange={(e) =>
                       setUpdateBlog({ ...updateBlog, content: e.target.value })
                     }
-                    className="w-full p-2 border border-gray-300 rounded mb-4"
+                    className="w-full p-2 border border-gray-300 rounded mb-4 resize-none h-80"
                   />
                   <div className="flex justify-center items-center flex-col">
                     <button
@@ -213,6 +213,11 @@ const UpdateBlogPosts = () => {
               >
                 Next
               </button>
+            </div>
+          )}
+          {blogPosts.length === 0 && (
+            <div className="text-center text-gray-500 py-4">
+              No blog posts available to View.
             </div>
           )}
         </>

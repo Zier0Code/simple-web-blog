@@ -116,6 +116,11 @@ const ViewBlogPosts = () => {
               </button>
             </div>
           )}
+          {blogPosts.length === 0 && (
+            <div className="text-center text-gray-500 py-4">
+              No blog posts available to View.
+            </div>
+          )}
         </>
       )}
     </div>
