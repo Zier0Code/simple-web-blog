@@ -3,8 +3,10 @@ import { createBlogPost } from "../../api/database";
 import { useSelector } from "react-redux";
 import { WithAuth } from "../../hoc/withAuth";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { toast } from "react-hot-toast";
 
-const create = () => {
+const Create = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.auth.user);
   const [newBlog, setNewBlog] = useState({
@@ -12,113 +14,118 @@ const create = () => {
     content: "",
     authorEmail: "",
   });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    type Blog = {
-      title: string;
-      content: string;
-      author_email: string;
-    };
-    const body: Blog = {
+    const body = {
       title: newBlog.title,
       content: newBlog.content,
       author_email: user?.user?.user_metadata?.email || "test@gmail.com",
     };
+
     try {
       if (!loading) {
         setLoading(true);
-        // Simulate API call to create a new blog post
         createBlogPost(body)
           .then((res: any) => {
             if (res.ok) {
-              console.log("Blog post created successfully:", res.data);
-              alert("Blog post created successfully!");
+              toast.success("Blog post created successfully!");
               setNewBlog({ title: "", content: "", authorEmail: "" });
             } else {
-              console.error("Failed to create blog post:", res.message);
+              toast.error("Failed:", res.message);
             }
           })
           .catch((err: any) => {
-            console.error("Error creating blog post:", err);
+            toast.error("Message: " + err.message);
           })
           .finally(() => {
             setLoading(false);
           });
       }
     } catch (err) {
-      console.error("Error creating blog post:", err);
+      toast.error("Error creating blog post:" + err);
     }
   };
 
   useEffect(() => {
-    document.title = "Create Blog Post - Web Blog";
+    document.title = "Create Blog Post - Blogify";
   }, []);
 
   return (
-    <>
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold mb-4">Create Blog Posts</h1>
-          <Link className="text-blue-600 hover:underline" to={"/"}>
+    <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-16">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">
+            <span className="text-blue-600 font-bold">Create</span> Blog Post
+          </h1>
+          <Link to="/" className="text-blue-600 hover:underline font-medium">
             Home
           </Link>
         </div>
-        <form
+
+        <motion.form
           onSubmit={handleSubmit}
-          className="bg-white p-6 rounded shadow-md"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white p-8 rounded-2xl shadow-xl"
         >
-          <div className="mb-4">
+          <div className="mb-6">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="title"
+              className="block text-gray-700 font-semibold mb-2"
             >
-              Title
+              Title :
             </label>
             <input
-              type="text"
               id="title"
-              onChange={(e) => {
-                setNewBlog((prev) => ({
-                  ...prev,
-                  title: e.target.value,
-                }));
-              }}
+              type="text"
               value={newBlog.title}
               placeholder="Enter blog title"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) =>
+                setNewBlog({ ...newBlog, title: e.target.value })
+              }
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
-          <div className="mb-4">
+
+          <div className="mb-6">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="content"
+              className="block text-gray-700 font-semibold mb-2"
             >
-              Content
+              Content :
             </label>
             <textarea
               id="content"
-              onChange={(e) => {
-                setNewBlog((prev) => ({
-                  ...prev,
-                  content: e.target.value,
-                }));
-              }}
               value={newBlog.content}
               placeholder="Write your blog content here..."
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-40"
+              onChange={(e) =>
+                setNewBlog({ ...newBlog, content: e.target.value })
+              }
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-800 h-48 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             ></textarea>
           </div>
-          <button
-            disabled={loading}
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            {loading ? "Creating..." : "Create Blog Post"}
-          </button>
-        </form>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`px-6 py-3 rounded-xl font-semibold text-white transition-all ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {loading ? "Creating..." : "Create Post"}
+            </button>
+          </div>
+        </motion.form>
       </div>
-    </>
+    </div>
   );
 };
 
-export default WithAuth(create);
+export default WithAuth(Create);

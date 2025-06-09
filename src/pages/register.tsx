@@ -1,135 +1,126 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser as registerAPI } from "../api/database";
-import { login } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
-import registerImage from "../assets/images/img2.jpg";
+import { login } from "../redux/authSlice";
+import registerImage from "../assets/images/register1.jpg";
+
+import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
 
 const Register = () => {
   useEffect(() => {
     document.title = "Register - Web Blog";
   }, []);
 
-  type loadingType = boolean;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<loadingType>(false);
-  // State variables for registration form
+
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Handle registration form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    type User = {
-      email: string;
-      password: string;
-      // confirmPassword: string;
-      // fullName: string;
-      // contactNumber: string;
-    };
 
-    const body: User = {
-      email: email,
-      password: password,
-      // confirmPassword: confirmPassword,
-      // fullName: fullName,
-      // contactNumber: contactNumber,
-    };
+    const body = { email, password };
 
-    // create registration api here
     try {
       if (!loading) {
-        setLoading((prev) => !prev);
-        registerAPI(body)
-          .then((res) => {
-            if (res.ok) {
-              // Dispatch login action with user data
-              dispatch(login(res.data));
-              // Navigate to the home page after successful registration
-              navigate("/");
-              alert("Registration successful! Please log in.");
-            } else {
-              console.error("Registration failed:", res.message);
-            }
-          })
-          .catch((err) => {
-            console.error("Error during registration:", err);
-          })
-          .finally(() => {
-            setLoading((prev) => !prev);
-            setEmail("");
-            setPassword("");
-          });
+        setLoading(true);
+        const res = await registerAPI(body);
+
+        if (res.ok) {
+          toast.success("Registration successful!");
+          dispatch(login(res.data));
+          navigate("/");
+        } else {
+          toast.error(res.message || "Registration failed.");
+        }
       }
     } catch (err) {
-      console.error("Error during registration:", err);
+      console.error("Registration error:", err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+      setEmail("");
+      setPassword("");
     }
-
-    // Handle registration logic here
   };
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:absolute md:left-0 md:top-30 mx-auto md:px-40 sm:grid-gap-2 p-10 w-full md:justify-around -z-10 bg-gray-100">
-        <div>
+    <div className="min-h-2/3 w-full bg-gray-100 flex flex-col lg:flex-row items-center justify-center px-6 py-12 overflow-hidden">
+      {/* Image Section */}
+      <div className="hidden lg:flex lg:w-1/2 justify-center">
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="relative w-full max-w-md"
+        >
           <img
             src={registerImage}
-            alt="Login"
-            className="md:w-96 md:h-96 object-cover shadow-lg mb-10"
-            style={{
-              boxShadow: "-20px 20px 0 0 rgba(0,0,0,.8)", // solid shadow, 10px right, -5px up, no blur, semi-transparent black
-            }}
+            alt="Register Visual"
+            className="rounded-3xl object-cover w-full h-full"
           />
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 p-4 self-center"
-        >
-          <div className="flex justify-start ">
-            <h1 className="font-bold text-3xl pb-2 text-center">Register</h1>
-          </div>
+          {/* <div className="absolute -bottom-6 -right-6 w-full h-full bg-black/20 rounded-3xl z-[-1]" /> */}
+        </motion.div>
+      </div>
 
-          <div className="max-w-md w-auto flex flex-col gap-2">
-            <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
-              placeholder="Email"
-              type="email"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              autoFocus
-            />
-            <input
-              className="p-2 border-2 border-gray-300 rounded-2xl"
-              placeholder="Password"
-              type="password"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </div>
-          <p className="text-xs ml-2">
-            Already have an Account ?{" "}
-            <Link className="text-blue-600 hover:underline" to={"/login"}>
-              {" "}
-              Login.
+      {/* Form Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg"
+      >
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+          Register
+        </h1>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={8}
+            maxLength={20}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition"
+          />
+
+          <p className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600 hover:underline">
+              Login
             </Link>
           </p>
+
           <button
-            className={`bg-black  max-w-md p-2 rounded-2xl  transition-colors duration-300  ${
-              loading
-                ? "cursor-not-allowed bg-gray-200 text-black/60"
-                : "cursor-pointer hover:bg-gray-800 text-white font-bold"
-            }`}
             type="submit"
             disabled={loading}
+            className={`w-full py-3 rounded-xl font-semibold transition-all ${
+              loading
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-900"
+            }`}
           >
-            {loading ? "Loading..." : "Submit"}
+            {loading ? "Registering..." : "Submit"}
           </button>
         </form>
-      </div>
-    </>
+      </motion.div>
+    </div>
   );
 };
 

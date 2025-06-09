@@ -1,43 +1,39 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import bgImg from "../assets/images/img1.jpg";
 
 const LandingPage = () => {
   return (
-    <>
-      <div className="lg:mt-20 mt-0">
-        <p
-          className="text-white font-semibold text-[64px]  sm:text-9xl text-center pt-20 tracking-tighter"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-        >
-          Create Your Dream Blog Now.
+    <div className="relative h-screen w-full overflow-hidden">
+      {/* Background Image */}
+      <img
+        src={bgImg}
+        alt="Landing Background"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/50 z-10" />
+
+      {/* Content */}
+      <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-4">
+        <h1 className="text-white text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight max-w-4xl">
+          Create Your Dream Blog Today
+        </h1>
+
+        <p className="text-gray-200 mt-4 text-lg sm:text-xl max-w-2xl">
+          Blogify helps you publish, share, and grow your voice with a beautiful
+          and intuitive blogging experience.
         </p>
 
-        {/* Tablet image */}
-        <img
-          src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-          alt="Landing Background"
-          className="block md:hidden w-full h-screen object-center absolute top-0 left-0 -z-10"
-        />
-
-        {/* Desktop image */}
-        <img
-          src={bgImg}
-          alt="Landing Tablet Background"
-          className="hidden md:block w-full h-screen object-center absolute top-0 left-0 -z-10"
-        />
-
-        <Link to={"/login"}>
-          <button
-            className="bg-red-600 text-white px-6 py-1  text-lg font-semibold hover:bg-[#8C1C1C] cursor-pointer transition-colors duration-300 flex self-center mx-auto mt-10"
-            style={{
-              boxShadow: "7px 7px 0 0 rgba(255,255,255)", // solid shadow, 10px right, -5px up, no blur, semi-transparent black
-            }}
-          >
-            Login
+        <Link to="/login">
+          <button className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-600 text-white text-lg font-semibold shadow-lg cursor-pointer hover:bg-red-700 transition duration-300">
+            Get Started
+            <ArrowRight size={20} />
           </button>
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

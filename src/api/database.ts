@@ -55,7 +55,7 @@ export const createBlogPost = async (post: {
   return { ok: true, data, message: "Blog post created successfully" };
 };
 
-export const getBlogPosts = async (page: number = 1, pageSize: number = 5) => {
+export const getBlogPosts = async (page: number = 1, pageSize: number = 10) => {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
