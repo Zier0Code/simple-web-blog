@@ -14,7 +14,6 @@ function App() {
   }, []);
 
   const navigations = [
-    { name: "Home", path: "/" },
     { name: "Blogs", path: "/blogs/views" },
     { name: "Create Blog", path: "/blogs/create" },
     { name: "Update Blog", path: "/blogs/update" },
