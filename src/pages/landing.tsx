@@ -28,7 +28,7 @@ const LandingPage = () => {
 
         <Link to={"/login"}>
           <button
-            className="bg-[#8C1C1C] text-white px-6 py-1  text-lg font-semibold hover:bg-[#8C1C1C]/80 cursor-pointer transition-colors duration-300 flex self-center mx-auto mt-10"
+            className="bg-red-600 text-white px-6 py-1  text-lg font-semibold hover:bg-[#8C1C1C] cursor-pointer transition-colors duration-300 flex self-center mx-auto mt-10"
             style={{
               boxShadow: "7px 7px 0 0 rgba(255,255,255)", // solid shadow, 10px right, -5px up, no blur, semi-transparent black
             }}
