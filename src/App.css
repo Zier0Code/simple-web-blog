@@ -1,6 +1,6 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import "tailwindcss";
 
 :root {
   --primary-color: #4a90e2;

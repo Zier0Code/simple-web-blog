@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { getBlogPosts } from "../../api/database";
 import { WithAuth } from "../../hoc/withAuth";
 import { Link } from "react-router-dom";
@@ -16,16 +16,6 @@ const ViewBlogPosts = () => {
   useEffect(() => {
     document.title = "View Blog Posts - Blogify";
   }, []);
-
-  const totalPages = useMemo(
-    () => Math.ceil(blogPosts.length / POSTS_PER_PAGE),
-    [blogPosts]
-  );
-
-  const currentPosts = useMemo(() => {
-    const start = (pageNumber - 1) * POSTS_PER_PAGE;
-    return blogPosts.slice(start, start + POSTS_PER_PAGE);
-  }, [blogPosts, pageNumber]);
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -50,11 +40,35 @@ const ViewBlogPosts = () => {
   }, []);
 
   const handleNextPage = () => {
-    if (pageNumber < totalPages) setPageNumber((prev) => prev + 1);
+    if (pageNumber < 10) setPageNumber((prev) => prev + 1);
+    getBlogPosts(pageNumber + 1)
+      .then((res) => {
+        if (res?.ok) {
+          setBlogPosts(res.data || []);
+        } else {
+          setError(res?.message || "Failed to fetch next page of blog posts");
+        }
+      })
+      .catch((err) => {
+        console.error("Next page fetch error:", err);
+        setError("Error fetching next page of blog posts");
+      });
   };
 
   const handlePrevPage = () => {
     if (pageNumber > 1) setPageNumber((prev) => prev - 1);
+    getBlogPosts(pageNumber - 1)
+      .then((res) => {
+        if (res?.ok) {
+          setBlogPosts(res.data || []);
+        } else {
+          setError(res?.message || "Failed to fetch next page of blog posts");
+        }
+      })
+      .catch((err) => {
+        console.error("Next page fetch error:", err);
+        setError("Error fetching next page of blog posts");
+      });
   };
 
   return (
@@ -80,7 +94,7 @@ const ViewBlogPosts = () => {
         {!isLoading && !error && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentPosts.map((post) => {
+              {blogPosts.map((post) => {
                 const createdAt = new Date(post.created_at || Date.now());
                 const date = createdAt.toLocaleDateString();
                 const time = createdAt.toLocaleTimeString();
@@ -119,38 +133,31 @@ const ViewBlogPosts = () => {
               })}
             </div>
 
-            {blogPosts.length > POSTS_PER_PAGE && (
-              <div className="mt-10 flex justify-center items-center space-x-6">
-                <button
-                  onClick={handlePrevPage}
-                  disabled={pageNumber === 1}
-                  className={`px-5 py-2 rounded-xl font-medium transition-all ${
-                    pageNumber === 1
-                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      : "bg-white text-gray-700 hover:bg-gray-100 shadow"
-                  }`}
-                >
-                  Previous
-                </button>
-
-                <span className="text-gray-700 font-medium">
-                  Page {pageNumber} of {totalPages}
-                </span>
-
+            <div className="flex justify-between items-center mt-8">
+              <button
+                onClick={handlePrevPage}
+                disabled={pageNumber === 1}
+                className={`px-4 py-2 text-sm text-gray-600 rounded hover:bg-gray-200 transition-all ${
+                  pageNumber === 1 ? "cursor-not-allowed opacity-50" : ""
+                }`}
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-600">
+                Page {pageNumber} of {10}
+              </span>
+              {blogPosts.length >= 5 && (
                 <button
                   onClick={handleNextPage}
-                  disabled={pageNumber === totalPages}
-                  className={`px-5 py-2 rounded-xl font-medium transition-all ${
-                    pageNumber === totalPages
-                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      : "bg-white text-gray-700 hover:bg-gray-100 shadow"
+                  disabled={pageNumber === 10}
+                  className={`px-4 py-2 text-sm text-gray-600 rounded hover:bg-gray-200 transition-all ${
+                    pageNumber === 10 ? "cursor-not-allowed opacity-50" : ""
                   }`}
                 >
                   Next
                 </button>
-              </div>
-            )}
-
+              )}
+            </div>
             {blogPosts.length === 0 && (
               <div className="text-center text-gray-500 py-6">
                 No blog posts available to view.
