@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Calendar, Clock, FileText } from "lucide-react";
 
-const POSTS_PER_PAGE = 6;
-
 const ViewBlogPosts = () => {
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
