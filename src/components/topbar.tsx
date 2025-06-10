@@ -6,7 +6,7 @@ const Topbar = () => {
           className="text-center text-2xl font-bold my-4 tracking-tighter text-gray-800 cursor-pointer hover:text-gray-600 transition-colors duration-300"
           style={{ fontFamily: "'Bebas Neue', sans-serif" }}
         >
-          Blogify
+          <a href="/">Blogify</a>
         </h1>
       </div>
     </>

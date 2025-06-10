@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { logoutUser } from "../api/database";
 
 interface AuthState {
-  user: any;
+  user: unknown | null;
 }
 
 const initialState: AuthState = {
